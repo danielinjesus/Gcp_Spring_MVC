@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+ 
+
+    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+    <beans:property name="driverClassName" value="com.mysql.jdbc.Driver"></beans:property>
+    <beans:property name="url" value="jdbc:mysql://google/bob?cloudSqlInstance=practice-223107:asia-east1:bobsapp&amp;socketFactory=com.google.cloud.sql.mysql.SocketFactory&amp;user=root&amp;password=korea90e&amp;useSSL=false"></beans:property>
+    <beans:property name="username" value="root"></beans:property> 
+    <beans:property name="password" value="korea90e"></beans:property> 
+    </beans:bean> 
+   
+    <!-- SqlSessionFactory --> 
+    <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+    <beans:property name="dataSource" ref="dataSource"></beans:property> 
+    <beans:property name="configLocation" value="classpath:com/bob/please/mybatis/Configuration.xml"></beans:property>
+     
+    </beans:bean> <!-- SqlSessionTemplate --> 
+    
+    <beans:bean id="sqlSessoinTemplate" class="org.mybatis.spring.SqlSessionTemplate"> 
+    <beans:constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory">
+    </beans:constructor-arg> </beans:bean>
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.bob.please" />
+	<context:component-scan base-package="com.bob.please.member.dao" />
+	<context:component-scan base-package="com.bob.please.member.service" />
+	<context:component-scan base-package="com.bob.please.member.controller" />
+	
+	
+</beans:beans>
